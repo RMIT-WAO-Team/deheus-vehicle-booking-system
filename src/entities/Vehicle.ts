@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import {Entity, Column, PrimaryColumn, OneToOne, JoinColumn, OneToMany} from "typeorm";
+import {Driver} from "./Driver";
+import {VehicleMaintenance} from "./VehicleMaintenance";
 
 export enum VehicleType {
     COMPANY_OWNED = "company_owned",
@@ -17,7 +19,7 @@ export enum VehicleStatus {
 @Entity()
 export class Vehicle {
     @PrimaryColumn()
-    id: number;
+    id: string;
 
     @Column({ type: "varchar", length: 255 })
     licensePlate: string;
@@ -42,4 +44,11 @@ export class Vehicle {
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     updatedAt: Date;
+
+    @OneToOne(() => Driver, (driver) => driver.vehicle)
+    @JoinColumn({ name: "driverId" })
+    driver: Driver;
+
+    @OneToMany(() => VehicleMaintenance, (maintenance) => maintenance.vehicle)
+    maintenances: VehicleMaintenance[];
 }

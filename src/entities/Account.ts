@@ -4,7 +4,7 @@ import { User } from "./User";
 @Entity()
 export class Account {
     @PrimaryColumn()
-    userId: number;
+    userId: string;
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     createdAt: Date;
