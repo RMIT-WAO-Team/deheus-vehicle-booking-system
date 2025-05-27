@@ -17,7 +17,15 @@ export class UserController {
 
     @Get("/users/:id")
     getOne(@Param("id") id: number) {
-        return "This action returns user #" + id;
+        return {
+            id: id,
+            name: "Sample User",
+            email: "sampleuser@gmail.com",
+            profileImageUrl: "http://example.com/profile.jpg",
+            phoneNumber: "123-456-7890",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
     }
 
     @Post("/users")

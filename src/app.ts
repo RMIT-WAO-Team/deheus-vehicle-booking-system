@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import "reflect-metadata";
 import "es6-shim";
@@ -11,14 +14,17 @@ useExpressServer(app, {
     controllers: [__dirname + "/controllers/*.ts"],
 });
 
-// AppDataSource.initialize()
-//     .then(() => {
-//         console.log("Data Source has been initialized!");
-//     })
-//     .catch((err) => {
-//         console.error("Error during Data Source initialization:", err);
-//     });
+AppDataSource.initialize()
+    .then(() => {
+        console.log("PostgreSQL Database connected successfully!");
+        app.listen(port, () => {
+            console.log(`Express is listening at http://localhost:${port}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization:", err);
+    });
 
-app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     return console.log(`Express is listening at http://localhost:${port}`);
+// });
