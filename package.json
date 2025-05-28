@@ -6,7 +6,12 @@
   "scripts": {
     "start": "nodemon dist/app.js",
     "dev": "nodemon --exec ts-node src/app.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "typeorm": "npm run build && npx typeorm -d dist/configs/data-source.config.js",
+    "migration:run": "npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/configs/data-source.config.ts",
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "migration:generate": "npx ts-node-esm ./node_modules/typeorm/cli.js migration:generate ./src/migrations/auto-migration -d ./src/configs/data-source.config.ts"
   },
   "keywords": [],
   "author": "WAO Team",
@@ -35,6 +40,7 @@
     "multer": "^2.0.0",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
+    "rimraf": "^6.0.1",
     "routing-controllers": "^0.11.2",
     "typedi": "^0.10.0",
     "typeorm": "^0.3.24"

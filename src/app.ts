@@ -5,7 +5,7 @@ import express from "express";
 import "reflect-metadata";
 import "es6-shim";
 import { useExpressServer } from "routing-controllers";
-import { AppDataSource } from "./configs/data-source.config";
+import AppDataSource from "./configs/data-source.config";
 
 const app = express();
 const port = 3000;

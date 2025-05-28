@@ -42,7 +42,7 @@ export class Driver {
     assignedTrips: Trip[];
 
     @ManyToOne(() => BaseLocation)
-    @Column({ name: "currentLocationId" })
+    @JoinColumn({ name: "currentLocationId" })
     currentLocation: BaseLocation;
 
     @OneToMany(() => TripExpense, (expense) => expense.driver)
