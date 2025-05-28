@@ -5,7 +5,7 @@ export enum LocationSource {
     CUSTOM = "custom"
 }
 
-@Entity({ name: 'Location' })
+@Entity({ name: 'location' })
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class BaseLocation {
     @PrimaryColumn({ type: 'varchar', length: 255 })
