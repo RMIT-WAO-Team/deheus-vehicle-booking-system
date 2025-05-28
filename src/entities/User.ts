@@ -1,10 +1,14 @@
-import { Entity, Column, PrimaryColumn, OneToOne } from "typeorm";
+import {Entity, Column, PrimaryColumn, OneToOne, ManyToMany, JoinTable, OneToMany} from "typeorm";
 import { Account } from "./Account";
+import {Driver} from "./Driver";
+import {Role} from "./Role";
+import {BookingRequestUser} from "./BookingRequestUser";
+import {Ticket} from "./Ticket";
 
 @Entity()
 export class User {
     @PrimaryColumn()
-    id: number;
+    userId: string;
 
     @Column({ type: "varchar", length: 255 })
     name: string;
@@ -29,4 +33,23 @@ export class User {
 
     @OneToOne(() => Account, (account) => account.user)
     account: Account;
+
+    @OneToMany(() => BookingRequestUser, bru => bru.user)
+    bookingLinks: BookingRequestUser[];
+
+    @OneToOne(() => Driver, (driver) => driver.user)
+    driver: Driver;
+
+    @ManyToMany(() => Role, {
+        cascade: ["insert", "update", "recover"],
+    })
+    @JoinTable({
+        name: "user_roles",
+        joinColumn: { name: "user_id", referencedColumnName: "userId" },
+        inverseJoinColumn: { name: "role_id", referencedColumnName: "roleId" },
+    })
+    roles: Role[];
+
+    @OneToMany(() => Ticket, (ticket) => ticket.user)
+    tickets: Ticket[];
 }
