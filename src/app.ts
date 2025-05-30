@@ -7,6 +7,7 @@ import "es6-shim";
 import {useContainer, useExpressServer} from "routing-controllers";
 import AppDataSource from "./configs/data-source.config";
 import {Container} from "typedi";
+import {CustomErrorHandler} from "./middlewares/error-handler.middleware";
 
 const app = express();
 const port = 3000;
@@ -17,6 +18,10 @@ useContainer(Container);
 useExpressServer(app, {
     routePrefix: "/api",
     controllers: [__dirname + "/controllers/*.ts"],
+    middlewares: [CustomErrorHandler],
+    defaultErrorHandler: false,
+    classTransformer: true,
+    validation: true
 });
 
 AppDataSource.initialize()
