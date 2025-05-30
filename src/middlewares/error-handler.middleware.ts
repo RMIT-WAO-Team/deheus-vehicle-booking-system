@@ -48,12 +48,15 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
 
         // * catch validation error in controller.
         if (isValidationError(error)) {
-            response.status(400).json({
-                success: false,
-                status: 400,
-                message: "Validation failed.",
-                data: extractErrors(error.errors!)
-            });
+            const responseData = ResponseBuilder
+                .create()
+                .withError(extractErrors(error.errors!))
+                .withMessage(error.message)
+                .withStatus(400)
+                .withMeta(null)
+                .build();
+
+            response.status(400).json(responseData);
             return;
         }
 

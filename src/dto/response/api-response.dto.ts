@@ -4,16 +4,16 @@ export class ApiResponse<T> {
         public message: string,
         public error: any,
         public data: T,
-        public meta?: Record<string, any>
+        public metadata?: Record<string, any>
     ) {}
 }
 
 export class ResponseBuilder<T> {
     private _status = 200;
     private _message = 'Success';
-    private _error: any = null;
+    private _error: any;
     private _data!: T; // will be set via withData
-    private _meta?: Record<string, any>;
+    private _meta?: Record<string, any> = null;
 
     static create<T>(): ResponseBuilder<T> {
         return new ResponseBuilder<T>();

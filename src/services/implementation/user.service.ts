@@ -1,10 +1,11 @@
 import {IUserService} from "../user.service.interface";
 import {UserDto} from "../../dto/user/user-get.dto";
 import {Service} from "typedi";
-import {getAllUsers} from "../../repositories/user.repository";
+import {getAllUsers, getUserById} from "../../repositories/user.repository";
 import {plainToInstance} from "class-transformer";
 import {ApiResponse, ResponseBuilder} from "../../dto/response/api-response.dto";
 import {Pagination} from "../../dto/utils/pagination";
+import {CustomErrorDto} from "../../dto/utils/custom-error";
 
 @Service()
 export class UserService implements IUserService {
@@ -36,6 +37,23 @@ export class UserService implements IUserService {
                     totalPage: pagination.getTotalPage(total),
                 }
             })
+            .build();
+    }
+
+    async getById(id: string): Promise<ApiResponse<UserDto>> {
+        const user = await getUserById(id);
+
+        if (!user)
+            throw new CustomErrorDto("User not found", 404, null);
+
+        const userDto: UserDto = plainToInstance(UserDto, user, {
+            excludeExtraneousValues: true
+        });
+
+        return ResponseBuilder.create<UserDto>()
+            .withStatus(200)
+            .withMessage("user detail")
+            .withData(userDto)
             .build();
     }
 }

@@ -5,22 +5,11 @@ import {Pagination} from "../dto/utils/pagination";
 const UserRepository = AppDataSource.getRepository(User);
 
 export const getAllUsers = async (pagination: Pagination): Promise<[User[], number]> => {
-    console.log("Pagination debug:", pagination);
-    console.log("Types:", typeof pagination.page, typeof pagination.size);
-
     // * retrieve list of users (only active) and apply pagination.
+    const skip = (pagination.page - 1) * pagination.size;
+
     return await UserRepository.findAndCount({
-        relations: {
-            roles: true
-        },
-        select: {
-            userId: true,
-            name: true,
-            email: true,
-            profileImageUrl: true,
-            phoneNumber: true
-        },
-        skip: (pagination.page - 1) * pagination.size,
+        skip: skip,
         take: pagination.size,
         where: {
             status: UserStatus.ACTIVE
@@ -28,5 +17,13 @@ export const getAllUsers = async (pagination: Pagination): Promise<[User[], numb
     });
 };
 
+export const getUserById = async (id: string): Promise<User> => {
+    return await UserRepository.findOne({
+        where: {
+            userId: id,
+            status: UserStatus.ACTIVE
+        }
+    })
+}
 
 export default UserRepository;
