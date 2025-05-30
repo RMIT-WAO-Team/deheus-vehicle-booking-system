@@ -4,13 +4,18 @@ dotenv.config();
 import express from "express";
 import "reflect-metadata";
 import "es6-shim";
-import { useExpressServer } from "routing-controllers";
+import {useContainer, useExpressServer} from "routing-controllers";
 import AppDataSource from "./configs/data-source.config";
+import {Container} from "typedi";
 
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+useContainer(Container);
+
 useExpressServer(app, {
+    routePrefix: "/api",
     controllers: [__dirname + "/controllers/*.ts"],
 });
 

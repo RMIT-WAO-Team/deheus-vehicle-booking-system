@@ -16,4 +16,6 @@ export class UserDto {
 
     @Expose()
     phoneNumber: string;
+
+    // * Doesnt include roles yet.
 }
