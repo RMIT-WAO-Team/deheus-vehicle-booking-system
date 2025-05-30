@@ -5,6 +5,11 @@ import {Role} from "./Role";
 import {BookingRequestUser} from "./BookingRequestUser";
 import {Ticket} from "./Ticket";
 
+export enum UserStatus {
+    ACTIVE = "active",
+    INACTIVE = "inactive",
+}
+
 @Entity()
 export class User {
     @PrimaryColumn()
@@ -24,6 +29,9 @@ export class User {
 
     @Column({ type: "varchar", length: 15, unique: true })
     phoneNumber: string;
+
+    @Column({ type: "enum" , enum: UserStatus, default: UserStatus.ACTIVE })
+    status: UserStatus;
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     createdAt: Date;
