@@ -1,45 +1,24 @@
 import {
     Controller,
-    Param,
-    Body,
-    Get,
-    Post,
-    Put,
-    Delete,
+    Get, QueryParams, Res
 } from "routing-controllers";
+import {Service} from "typedi";
+import {Pagination} from "../dto/utils/pagination";
+import {ApiResponse} from "../dto/response/api-response.dto";
+import {UserDto} from "../dto/user/user-get.dto";
+import {Response} from "express";
+import {UserService} from "../services/implementation/user.service";
+import {instanceToPlain} from "class-transformer";
 
-@Controller()
+@Controller("/users")
+@Service()
 export class UserController {
-    @Get("/users")
-    getAll() {
-        return "This action returns all users";
-    }
+    constructor(private userService: UserService) {}
 
-    @Get("/users/:id")
-    getOne(@Param("id") id: number) {
-        return {
-            id: id,
-            name: "Sample User",
-            email: "sampleuser@gmail.com",
-            profileImageUrl: "http://example.com/profile.jpg",
-            phoneNumber: "123-456-7890",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-    }
+    @Get("")
+    async getAll(@QueryParams() pagination: Pagination, @Res() res: Response) {
+        const result: ApiResponse<UserDto[]> = await this.userService.getAll(pagination);
 
-    @Post("/users")
-    post(@Body() user: any) {
-        return "Saving user...";
-    }
-
-    @Put("/users/:id")
-    put(@Param("id") id: number, @Body() user: any) {
-        return "Updating a user...";
-    }
-
-    @Delete("/users/:id")
-    remove(@Param("id") id: number) {
-        return "Removing user...";
+        return res.status(result.status).json(result);
     }
 }
