@@ -5,7 +5,6 @@ import {getAllUsers} from "../../repositories/user.repository";
 import {plainToInstance} from "class-transformer";
 import {ApiResponse, ResponseBuilder} from "../../dto/response/api-response.dto";
 import {Pagination} from "../../dto/utils/pagination";
-import {CustomErrorDto} from "../../dto/utils/custom-error";
 
 @Service()
 export class UserService implements IUserService {
